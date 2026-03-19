@@ -61,7 +61,7 @@ final recentlyPlayedVersion = ValueNotifier<int>(0);
 final lyrics = ValueNotifier<String?>(null);
 String? lastFetchedLyrics;
 
-final _clients = getYtClients();
+final _clients = [customAndroidVr, customAndroidSdkless];
 
 // Timeouts and durations used across manifest fetching and cache validation.
 const Duration _manifestTimeout = Duration(seconds: 12);
@@ -73,13 +73,9 @@ Future<StreamManifest?> _fetchStreamManifest(String songId) async {
     return ProxyManager().getSongManifest(songId).timeout(_manifestTimeout);
   }
 
-  if (_clients != null) {
-    return ytClient.videos.streams
-        .getManifest(songId, ytClients: _clients!)
-        .timeout(_manifestTimeout);
-  }
-
-  return ytClient.videos.streams.getManifest(songId).timeout(_manifestTimeout);
+  return ytClient.videos.streams
+      .getManifest(songId, ytClients: _clients)
+      .timeout(_manifestTimeout);
 }
 
 /// Returns a cached song URL if present and still valid.
