@@ -20,6 +20,7 @@
  */
 
 import 'dart:async';
+import 'dart:io';
 
 import 'package:app_links/app_links.dart';
 import 'package:audio_service/audio_service.dart';
@@ -261,15 +262,19 @@ Future<void> initialisation() async {
       Hive.openBox('cache'),
     ]);
 
+    final audioServiceConfig = Platform.isAndroid
+        ? const AudioServiceConfig(
+            androidNotificationChannelId: 'com.gokadzev.musify',
+            androidNotificationChannelName: 'Musify',
+            androidNotificationIcon: 'drawable/ic_launcher_foreground',
+            androidShowNotificationBadge: true,
+            androidStopForegroundOnPause: false,
+          )
+        : const AudioServiceConfig();
+
     audioHandler = await AudioService.init(
       builder: MusifyAudioHandler.new,
-      config: const AudioServiceConfig(
-        androidNotificationChannelId: 'com.gokadzev.musify',
-        androidNotificationChannelName: 'Musify',
-        androidNotificationIcon: 'drawable/ic_launcher_foreground',
-        androidShowNotificationBadge: true,
-        androidStopForegroundOnPause: false,
-      ),
+      config: audioServiceConfig,
     );
 
     // Init router

@@ -66,5 +66,15 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>Musify needs access to your music library</string>
+	<key>NSDocumentsFolderUsageDescription</key>
+	<string>Musify needs access to your files to play music</string>
+	<key>NSFileProviderDomainUsageDescription</key>
+	<string>Musify needs access to your files</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>audio</string>
+	</array>
 </dict>
 </plist>

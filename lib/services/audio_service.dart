@@ -43,24 +43,19 @@ class MusifyAudioHandler extends BaseAudioHandler {
       audioPipeline: Platform.isAndroid
           ? AudioPipeline(androidAudioEffects: [_androidEqualizer])
           : AudioPipeline(),
-      audioLoadConfiguration: const AudioLoadConfiguration(
-        androidLoadControl: AndroidLoadControl(
-          maxBufferDuration: Duration(seconds: 60),
-          bufferForPlaybackDuration: Duration(milliseconds: 500),
-          bufferForPlaybackAfterRebufferDuration: Duration(seconds: 3),
-        ),
-      ),
     );
 
     _setupEventSubscriptions();
     _updatePlaybackState();
 
-    audioPlayer.setAndroidAudioAttributes(
-      const AndroidAudioAttributes(
-        contentType: AndroidAudioContentType.music,
-        usage: AndroidAudioUsage.media,
-      ),
-    );
+    if (Platform.isAndroid) {
+      audioPlayer.setAndroidAudioAttributes(
+        const AndroidAudioAttributes(
+          contentType: AndroidAudioContentType.music,
+          usage: AndroidAudioUsage.media,
+        ),
+      );
+    }
 
     _initialize();
   }
