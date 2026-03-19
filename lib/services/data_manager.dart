@@ -283,7 +283,18 @@ Future<String> backupData(BuildContext context) async {
 
 Future<String> restoreData(BuildContext context) async {
   final boxNames = ['user', 'settings'];
-  final result = await FilePicker.platform.pickFiles(allowMultiple: true);
+  // Prefer audio type on iOS local-file pickers, but fall back to `any`
+  // because this restore flow expects `.hive` backup files.
+  var result = await FilePicker.platform.pickFiles(
+    allowMultiple: true,
+    type: FileType.audio,
+  );
+  if (result == null || result.files.isEmpty) {
+    result = await FilePicker.platform.pickFiles(
+      allowMultiple: true,
+      type: FileType.any,
+    );
+  }
 
   if (result == null || result.files.isEmpty) {
     return '${context.l10n!.chooseBackupFiles}!';
